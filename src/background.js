@@ -5,12 +5,14 @@ const DEFAULT_SETTINGS = {
   captureDelayMs: 700,
   hideStickyUi: true,
   hideDynamicMedia: false,
-  overlapPx: 8,
+  overlapPx: 8
 };
 
 const CAPTURE_RETRY_DELAY_MS = 1200;
 const MAX_CAPTURE_RETRIES = 4;
 const SUCCESS_BADGE_DURATION_MS = 3000;
+const ERROR_BADGE_DURATION_MS = 3000;
+const BLOCKED_BADGE_DURATION_MS = 3000;
 
 let creatingOffscreenDocument = null;
 let badgePulseInterval = null;
@@ -26,16 +28,11 @@ const getSettings = async () => {
   const result = await chrome.storage.sync.get(DEFAULT_SETTINGS);
 
   return {
-    maxCaptureHeight:
-      Number(result.maxCaptureHeight) || DEFAULT_SETTINGS.maxCaptureHeight,
-    captureDelayMs:
-      Number(result.captureDelayMs) || DEFAULT_SETTINGS.captureDelayMs,
+    maxCaptureHeight: Number(result.maxCaptureHeight) || DEFAULT_SETTINGS.maxCaptureHeight,
+    captureDelayMs: Number(result.captureDelayMs) || DEFAULT_SETTINGS.captureDelayMs,
     hideStickyUi: Boolean(result.hideStickyUi),
     hideDynamicMedia: Boolean(result.hideDynamicMedia),
-    overlapPx: Math.max(
-      1,
-      Number(result.overlapPx) || DEFAULT_SETTINGS.overlapPx
-    ),
+    overlapPx: Math.max(1, Number(result.overlapPx) || DEFAULT_SETTINGS.overlapPx)
   };
 };
 
@@ -45,7 +42,7 @@ const ensureOffscreenDocument = async () => {
   if (chrome.runtime.getContexts) {
     const contexts = await chrome.runtime.getContexts({
       contextTypes: ["OFFSCREEN_DOCUMENT"],
-      documentUrls: [offscreenUrl],
+      documentUrls: [offscreenUrl]
     });
 
     if (contexts.length > 0) {
@@ -61,8 +58,7 @@ const ensureOffscreenDocument = async () => {
   creatingOffscreenDocument = chrome.offscreen.createDocument({
     url: OFFSCREEN_DOCUMENT_PATH,
     reasons: ["BLOBS"],
-    justification:
-      "Stitch multiple viewport screenshots into one full-page image.",
+    justification: "Stitch multiple viewport screenshots into one full-page image."
   });
 
   try {
@@ -72,26 +68,35 @@ const ensureOffscreenDocument = async () => {
   }
 };
 
-const sendMessageToTab = async (tabId, message) =>
-  chrome.tabs.sendMessage(tabId, message);
+const sendMessageToTab = async (tabId, message) => chrome.tabs.sendMessage(tabId, message);
 
 const injectPageScript = async (tabId) => {
   await chrome.scripting.executeScript({
     target: { tabId },
-    files: ["src/page.js"],
+    files: ["src/page.js"]
   });
+};
+
+const isRestrictedPageError = (error) => {
+  const message = error instanceof Error ? error.message : String(error);
+
+  return (
+    message.includes("cannot be scripted") ||
+    message.includes("The extensions gallery cannot be scripted") ||
+    message.includes("Cannot access a chrome:// URL") ||
+    message.includes("Cannot access contents of the page") ||
+    message.includes("Missing host permission for the tab")
+  );
 };
 
 const captureVisibleTabWithRetry = async (windowId, attempt = 0) => {
   try {
     return await chrome.tabs.captureVisibleTab(windowId, {
-      format: "png",
+      format: "png"
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    const hitQuota = message.includes(
-      "MAX_CAPTURE_VISIBLE_TAB_CALLS_PER_SECOND"
-    );
+    const hitQuota = message.includes("MAX_CAPTURE_VISIBLE_TAB_CALLS_PER_SECOND");
 
     if (!hitQuota || attempt >= MAX_CAPTURE_RETRIES) {
       throw error;
@@ -131,7 +136,7 @@ const startCapturingBadge = async () => {
     "#D32F2F",
     "#E53935",
     "#D32F2F",
-    "#C62828",
+    "#C62828"
   ];
 
   let pulseIndex = 0;
@@ -143,11 +148,9 @@ const startCapturingBadge = async () => {
 
     chrome.action
       .setBadgeBackgroundColor({
-        color: pulseColors[pulseIndex],
+        color: pulseColors[pulseIndex]
       })
-      .catch(() => {
-        // Ignore badge update failures if the extension is unloading.
-      });
+      .catch(() => {});
   }, 180);
 };
 
@@ -169,7 +172,18 @@ const showErrorBadge = async () => {
   }
 
   await setBadge("Err", "#B00020");
-  await sleep(3000);
+  await sleep(ERROR_BADGE_DURATION_MS);
+  await clearBadge();
+};
+
+const showBlockedBadge = async () => {
+  if (badgePulseInterval) {
+    clearInterval(badgePulseInterval);
+    badgePulseInterval = null;
+  }
+
+  await setBadge("Nope", "#424242");
+  await sleep(BLOCKED_BADGE_DURATION_MS);
   await clearBadge();
 };
 
@@ -184,17 +198,25 @@ chrome.action.onClicked.addListener(async (tab) => {
     const settings = await getSettings();
 
     await ensureOffscreenDocument();
-    await injectPageScript(tab.id);
+
+    try {
+      await injectPageScript(tab.id);
+    } catch (error) {
+      if (isRestrictedPageError(error)) {
+        await showBlockedBadge();
+        return;
+      }
+
+      throw error;
+    }
 
     const prepareResponse = await sendMessageToTab(tab.id, {
       type: "PREPARE_CAPTURE",
-      settings,
+      settings
     });
 
     if (!prepareResponse?.ok) {
-      throw new Error(
-        prepareResponse?.error || "Failed to prepare page for capture."
-      );
+      throw new Error(prepareResponse?.error || "Failed to prepare page for capture.");
     }
 
     const pageInfo = await sendMessageToTab(tab.id, { type: "GET_PAGE_INFO" });
@@ -209,7 +231,7 @@ chrome.action.onClicked.addListener(async (tab) => {
       viewportWidth,
       viewportHeight,
       originalScrollX,
-      originalScrollY,
+      originalScrollY
     } = pageInfo.data;
 
     const effectiveHeight =
@@ -221,21 +243,15 @@ chrome.action.onClicked.addListener(async (tab) => {
     const captures = [];
     let lastActualY = -1;
 
-    for (
-      let requestedY = 0;
-      requestedY < effectiveHeight;
-      requestedY += captureStep
-    ) {
+    for (let requestedY = 0; requestedY < effectiveHeight; requestedY += captureStep) {
       const scrollResponse = await sendMessageToTab(tab.id, {
         type: "SCROLL_TO",
         x: originalScrollX,
-        y: requestedY,
+        y: requestedY
       });
 
       if (!scrollResponse?.ok) {
-        throw new Error(
-          scrollResponse?.error || `Failed to scroll to ${requestedY}px.`
-        );
+        throw new Error(scrollResponse?.error || `Failed to scroll to ${requestedY}px.`);
       }
 
       const actualY =
@@ -253,7 +269,7 @@ chrome.action.onClicked.addListener(async (tab) => {
 
       captures.push({
         y: actualY,
-        dataUrl,
+        dataUrl
       });
 
       lastActualY = actualY;
@@ -271,8 +287,8 @@ chrome.action.onClicked.addListener(async (tab) => {
         viewportWidth,
         viewportHeight,
         captures,
-        overlapPx: settings.overlapPx,
-      },
+        overlapPx: settings.overlapPx
+      }
     });
 
     if (!stitched?.ok || !stitched?.dataUrl) {
@@ -282,13 +298,13 @@ chrome.action.onClicked.addListener(async (tab) => {
     await chrome.downloads.download({
       url: stitched.dataUrl,
       filename: getFilename(),
-      saveAs: false,
+      saveAs: false
     });
 
     await sendMessageToTab(tab.id, {
       type: "RESTORE_PAGE",
       x: originalScrollX,
-      y: originalScrollY,
+      y: originalScrollY
     });
 
     await showDoneBadge();
@@ -297,11 +313,9 @@ chrome.action.onClicked.addListener(async (tab) => {
 
     try {
       await sendMessageToTab(tab.id, {
-        type: "RESTORE_PAGE",
+        type: "RESTORE_PAGE"
       });
-    } catch {
-      // Ignore restore failures.
-    }
+    } catch {}
 
     await showErrorBadge();
   }
