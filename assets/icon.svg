@@ -1,0 +1,37 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="pageGrad" x1="48" y1="32" x2="208" y2="224" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#60A5FA"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="128" y1="60" x2="128" y2="196" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#34D399"/>
+      <stop offset="1" stop-color="#10B981"/>
+    </linearGradient>
+    <filter id="shadow" x="24" y="20" width="208" height="216" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#0F172A" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#shadow)">
+    <path d="M72 28H154L204 78V192C204 206.359 192.359 218 178 218H72C57.6406 218 46 206.359 46 192V54C46 39.6406 57.6406 28 72 28Z" fill="url(#pageGrad)"/>
+    <path d="M154 28V62C154 73.0457 162.954 82 174 82H204" fill="#93C5FD" fill-opacity="0.85"/>
+    <path d="M154 28H72C57.6406 28 46 39.6406 46 54V192C46 206.359 57.6406 218 72 218H178C192.359 218 204 206.359 204 192V78L154 28Z" stroke="#1E3A8A" stroke-width="12" stroke-linejoin="round"/>
+    <path d="M154 28V62C154 73.0457 162.954 82 174 82H204" stroke="#1E3A8A" stroke-width="12" stroke-linejoin="round"/>
+
+    <path d="M94 111H162C169.18 111 175 116.82 175 124V164C175 171.18 169.18 177 162 177H94C86.8203 177 81 171.18 81 164V124C81 116.82 86.8203 111 94 111Z" fill="white"/>
+    <path d="M99 101H121C124.314 101 127 103.686 127 107V111H93V107C93 103.686 95.6863 101 99 101Z" fill="white"/>
+    <circle cx="128" cy="144" r="20" fill="url(#accentGrad)"/>
+    <circle cx="128" cy="144" r="10" fill="#ECFDF5"/>
+    <circle cx="152" cy="124" r="5" fill="#BFDBFE"/>
+    <path d="M99 101H121C124.314 101 127 103.686 127 107V111H93V107C93 103.686 95.6863 101 99 101Z" stroke="#1E3A8A" stroke-width="10" stroke-linejoin="round"/>
+    <path d="M94 111H162C169.18 111 175 116.82 175 124V164C175 171.18 169.18 177 162 177H94C86.8203 177 81 171.18 81 164V124C81 116.82 86.8203 111 94 111Z" stroke="#1E3A8A" stroke-width="10" stroke-linejoin="round"/>
+    <circle cx="128" cy="144" r="20" stroke="#1E3A8A" stroke-width="10"/>
+  </g>
+
+  <path d="M128 54V88" stroke="url(#accentGrad)" stroke-width="14" stroke-linecap="round"/>
+  <path d="M112 72L128 88L144 72" stroke="url(#accentGrad)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <path d="M128 202V168" stroke="url(#accentGrad)" stroke-width="14" stroke-linecap="round"/>
+  <path d="M112 184L128 168L144 184" stroke="url(#accentGrad)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

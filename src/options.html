@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Full Page Screenshot Settings</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+
+      body {
+        font-family: system-ui, sans-serif;
+        padding: 20px;
+        max-width: 560px;
+        line-height: 1.45;
+      }
+
+      h1 {
+        font-size: 20px;
+        margin: 0 0 8px;
+      }
+
+      p {
+        margin: 0 0 16px;
+        color: #666;
+      }
+
+      .field {
+        margin-top: 20px;
+      }
+
+      label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      select,
+      input[type="range"] {
+        width: 100%;
+      }
+
+      .range-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .value {
+        min-width: 72px;
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .checkbox {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        font-weight: 500;
+      }
+
+      .checkbox input {
+        margin: 0;
+      }
+
+      .hint {
+        margin-top: 6px;
+        font-size: 13px;
+        color: #777;
+      }
+
+      button {
+        margin-top: 24px;
+        padding: 8px 14px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      .status {
+        margin-top: 12px;
+        min-height: 20px;
+        color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Full Page Screenshot Settings</h1>
+    <p>
+      Adjust how much of the page is captured and how aggressively the extension
+      stabilises the page before stitching.
+    </p>
+
+    <div class="field">
+      <label for="captureLength">Maximum Capture Length</label>
+      <select id="captureLength">
+        <option value="10000">Short — up to 10,000px</option>
+        <option value="15000">Medium — up to 15,000px</option>
+        <option value="30000">Long — up to 30,000px</option>
+        <option value="0">Unlimited — capture the full page</option>
+      </select>
+      <div class="hint">
+        Unlimited can be slower and may fail on extremely long or complex pages.
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="captureDelay">Delay Between Scrolls</label>
+      <div class="range-row">
+        <input id="captureDelay" type="range" min="200" max="2000" step="100" />
+        <div class="value" id="captureDelayValue"></div>
+      </div>
+      <div class="hint">
+        Higher delays are slower, but more reliable for lazy-loading and
+        rate-limited pages.
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="checkbox" for="hideStickyUi">
+        <input id="hideStickyUi" type="checkbox" />
+        <span>Hide sticky/fixed UI during capture</span>
+      </label>
+      <div class="hint">
+        Helps prevent duplicated headers and footers in stitched screenshots.
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="checkbox" for="hideDynamicMedia">
+        <input id="hideDynamicMedia" type="checkbox" />
+        <span>Hide video and canvas during capture</span>
+      </label>
+      <div class="hint">
+        Useful for animated pages, video players and other moving content.
+      </div>
+    </div>
+
+    <button id="save" type="button">Save</button>
+    <div class="status" id="status"></div>
+
+    <script src="options.js"></script>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+{
+  "manifest_version": 3,
+  "name": "One-Click Full Page Screenshot",
+  "short_name": "Screenshot",
+  "version": "1.0.0",
+  "description": "Takes a full-page screenshot of the current tab when clicked and saves it as a PNG.",
+  "author": "Rob Taylor <manix84@gmail.com>",
+  "action": {
+    "default_title": "Take full page screenshot",
+    "default_icon": {
+      "16": "assets/icon16.png",
+      "32": "assets/icon32.png",
+      "48": "assets/icon48.png",
+      "128": "assets/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "options_page": "src/options.html",
+  "permissions": [
+    "activeTab",
+    "downloads",
+    "tabs",
+    "scripting",
+    "offscreen",
+    "storage"
+  ],
+  "icons": {
+    "16": "assets/icon16.png",
+    "32": "assets/icon32.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  }
+}
