@@ -1,5 +1,7 @@
 # One-Click Full Page Screenshot
 
+[![Release Chrome Extension](https://github.com/manix84/chrome-ext-tab-full-screenshot/actions/workflows/release-extension.yml/badge.svg)](https://github.com/manix84/chrome-ext-tab-full-screenshot/actions/workflows/release-extension.yml)
+
 A lightweight Chrome extension that captures a full-page screenshot of the current tab with a single click — no accounts, no tracking, no nonsense.
 
 ## ✨ Features
