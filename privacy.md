@@ -1,92 +1,99 @@
-# One-Click Full Page Screenshot
+# Privacy Policy
 
-A lightweight Chrome extension that captures a full-page screenshot of the current tab with a single click — no accounts, no tracking, no nonsense.
+## Overview
 
-## ✨ Features
+This extension is designed to respect your privacy. It does not collect, store, transmit, or share any personal or sensitive user data.
 
-- 📸 Capture entire webpages (not just the visible area)
-- 🧠 Smart stitching with overlap handling (no seams or gaps)
-- ⚡ One-click capture from the toolbar
-- 💾 Automatically downloads the image (no prompts)
-- 🎯 Handles tricky pages:
-  - Sticky headers/footers
-  - Infinite scroll (with configurable limits)
-  - Lazy-loaded content
-  - High-DPI / zoomed displays
-- 🎛 Customisable behaviour via options:
-  - Maximum capture length
-  - Delay between scrolls
-  - Hide sticky UI elements
-  - Hide video/canvas content
-
-## 🧰 How It Works
-
-1. Click the extension icon
-2. The page is prepared for capture (animations paused, optional UI hidden)
-3. The page is scrolled in segments and screenshots are taken
-4. Images are stitched together in the background
-5. The final image is automatically downloaded
-
-## ⚙️ Settings
-
-You can configure behaviour from the extension options page:
-
-- **Capture Length**
-  - Short (10,000px)
-  - Medium (15,000px)
-  - Long (30,000px)
-  - Unlimited
-
-- **Delay Between Scrolls**
-  - Helps with slow or lazy-loading pages
-
-- **Hide Sticky UI**
-  - Prevents duplicated headers/footers
-
-- **Hide Video/Canvas**
-  - Useful for animated or dynamic content
-
-## 🔒 Privacy First
-
-This extension is designed with privacy as a priority:
-
-- No tracking
-- No analytics
-- No data collection
-- No external requests
-- No accounts required
-
-Everything runs locally in your browser.
-
-## 🚫 Limitations
-
-- Extremely long pages may be truncated (by design or browser limits)
-- Some complex web apps may not render perfectly when captured
-- Pages using heavy GPU transforms may still produce minor artifacts
-
-## 🧪 Development
-
-This extension uses plain JavaScript and does not require a build step.
-
-### Install locally
-
-1. Clone this repository
-2. Go to `chrome://extensions`
-3. Enable **Developer mode**
-4. Click **Load unpacked**
-5. Select the project folder
-
-## 📦 Packaging
-
-To publish:
-
-- Zip the extension directory
-- Upload via the Chrome Web Store Developer Dashboard
-
-## 📄 License
-
-MIT (or whatever you prefer)
+All functionality is performed locally within your browser.
 
 ---
 
-Built with a focus on simplicity, performance, and respecting users.
+## Data Collection
+
+This extension does **not** collect any of the following:
+
+- Personally identifiable information (PII)
+- Health information
+- Financial or payment information
+- Authentication information (passwords, tokens, etc.)
+- Personal communications (emails, messages, etc.)
+- Location data
+- Browsing history
+- User activity data
+- Website content (outside of temporary processing for screenshots)
+
+---
+
+## How the Extension Works
+
+To function, the extension:
+
+- Temporarily accesses the current tab when the user clicks the extension icon
+- Captures visible portions of the page
+- Stitches images together locally in the browser
+- Saves the final image to the user’s device
+
+All processing happens entirely on-device and is not transmitted anywhere.
+
+---
+
+## Data Storage
+
+The extension uses Chrome's `storage` API only to store user preferences, such as:
+
+- Capture length settings
+- Delay timing
+- UI toggles
+
+This data:
+
+- Is stored locally or synced via the user's Chrome profile
+- Is never transmitted to external servers
+- Is not used for tracking or analytics
+
+---
+
+## Permissions Justification
+
+- **activeTab**  
+  Used to capture screenshots of the currently active tab when the user explicitly clicks the extension.
+
+- **downloads**  
+  Used to save the generated screenshot image to the user’s device.
+
+- **tabs**  
+  Used to interact with the active tab during the capture process.
+
+- **scripting**  
+  Used to inject a script into the page to control scrolling and prepare the page for capture.
+
+- **offscreen**  
+  Used to process and stitch images into a final screenshot without blocking the UI.
+
+- **storage**  
+  Used to store user preferences.
+
+---
+
+## Data Sharing
+
+This extension:
+
+- Does not send data to any external servers
+- Does not share data with third parties
+- Does not use analytics or tracking tools
+
+---
+
+## Changes to This Policy
+
+If this privacy policy changes, updates will be reflected in this document.
+
+---
+
+## Contact
+
+If you have any questions about this privacy policy, please contact:
+
+Rob Taylor  
+manix84@gmail.com
