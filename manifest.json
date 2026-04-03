@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "One-Click Full Page Screenshot",
   "short_name": "Screenshot",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Takes a full-page screenshot of the current tab when clicked and saves it as a PNG.",
   "author": "Rob Taylor <manix84@gmail.com>",
   "action": {
