@@ -21,7 +21,6 @@
   "permissions": [
     "activeTab",
     "downloads",
-    "tabs",
     "scripting",
     "offscreen",
     "storage"
