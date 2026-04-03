@@ -55,22 +55,19 @@ This data:
 
 ## Permissions Justification
 
-- **activeTab**  
+- **activeTab**
   Used to capture screenshots of the currently active tab when the user explicitly clicks the extension.
 
-- **downloads**  
+- **downloads**
   Used to save the generated screenshot image to the user’s device.
 
-- **tabs**  
-  Used to interact with the active tab during the capture process.
-
-- **scripting**  
+- **scripting**
   Used to inject a script into the page to control scrolling and prepare the page for capture.
 
-- **offscreen**  
+- **offscreen**
   Used to process and stitch images into a final screenshot without blocking the UI.
 
-- **storage**  
+- **storage**
   Used to store user preferences.
 
 ---
@@ -95,5 +92,5 @@ If this privacy policy changes, updates will be reflected in this document.
 
 If you have any questions about this privacy policy, please contact:
 
-Rob Taylor  
+Rob Taylor
 manix84@gmail.com
